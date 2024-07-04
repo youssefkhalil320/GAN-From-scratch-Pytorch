@@ -1,6 +1,7 @@
 import os
 import torch
 import torchvision
+import pytorch_lightning as pl
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
@@ -9,14 +10,12 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, random_split
 from torchvision.datasets import MNIST
 
-
 random_seed = 42
 torch.manual_seed(random_seed)
 
 BATCH_SIZE = 128
 AVAIL_GPUS = min(1, torch.cuda.device_count())
 NUM_WORKERS = int(os.cpu_count() / 2)
-
 
 class MNISTDataModule(pl.LightningDataModule):
     def __init__(self, data_dir="./data",
@@ -60,10 +59,8 @@ class MNISTDataModule(pl.LightningDataModule):
         return DataLoader(self.mnist_test, batch_size=self.batch_size, num_workers=self.num_workers)
 
 
+# Test Script
 if __name__ == "__main__":
-    import pytorch_lightning as pl
-    from torch.utils.data import DataLoader
-
     # Instantiate the data module
     data_module = MNISTDataModule()
 
@@ -80,8 +77,7 @@ if __name__ == "__main__":
 
     # Iterate through the training data loader
     for batch_idx, (data, target) in enumerate(train_dataloader):
-        print(
-            f"Batch {batch_idx}: data shape {data.shape}, target shape {target.shape}")
+        print(f"Batch {batch_idx}: data shape {data.shape}, target shape {target.shape}")
         if batch_idx == 1:  # Print only the first two batches
             break
 
@@ -91,8 +87,7 @@ if __name__ == "__main__":
 
     # Iterate through the validation data loader
     for batch_idx, (data, target) in enumerate(val_dataloader):
-        print(
-            f"Batch {batch_idx}: data shape {data.shape}, target shape {target.shape}")
+        print(f"Batch {batch_idx}: data shape {data.shape}, target shape {target.shape}")
         if batch_idx == 1:  # Print only the first two batches
             break
 
@@ -102,7 +97,6 @@ if __name__ == "__main__":
 
     # Iterate through the test data loader
     for batch_idx, (data, target) in enumerate(test_dataloader):
-        print(
-            f"Batch {batch_idx}: data shape {data.shape}, target shape {target.shape}")
+        print(f"Batch {batch_idx}: data shape {data.shape}, target shape {target.shape}")
         if batch_idx == 1:  # Print only the first two batches
             break
