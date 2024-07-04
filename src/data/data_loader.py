@@ -58,3 +58,51 @@ class MNISTDataModule(pl.LightningDataModule):
 
     def test_dataloader(self):
         return DataLoader(self.mnist_test, batch_size=self.batch_size, num_workers=self.num_workers)
+
+
+if __name__ == "__main__":
+    import pytorch_lightning as pl
+    from torch.utils.data import DataLoader
+
+    # Instantiate the data module
+    data_module = MNISTDataModule()
+
+    # Prepare the data (download if necessary)
+    data_module.prepare_data()
+
+    # Set up the data (train/val/test splits)
+    data_module.setup(stage='fit')
+    data_module.setup(stage='test')
+
+    # Check the train dataloader
+    train_dataloader = data_module.train_dataloader()
+    print("Train DataLoader length:", len(train_dataloader))
+
+    # Iterate through the training data loader
+    for batch_idx, (data, target) in enumerate(train_dataloader):
+        print(
+            f"Batch {batch_idx}: data shape {data.shape}, target shape {target.shape}")
+        if batch_idx == 1:  # Print only the first two batches
+            break
+
+    # Check the validation dataloader
+    val_dataloader = data_module.val_dataloader()
+    print("Validation DataLoader length:", len(val_dataloader))
+
+    # Iterate through the validation data loader
+    for batch_idx, (data, target) in enumerate(val_dataloader):
+        print(
+            f"Batch {batch_idx}: data shape {data.shape}, target shape {target.shape}")
+        if batch_idx == 1:  # Print only the first two batches
+            break
+
+    # Check the test dataloader
+    test_dataloader = data_module.test_dataloader()
+    print("Test DataLoader length:", len(test_dataloader))
+
+    # Iterate through the test data loader
+    for batch_idx, (data, target) in enumerate(test_dataloader):
+        print(
+            f"Batch {batch_idx}: data shape {data.shape}, target shape {target.shape}")
+        if batch_idx == 1:  # Print only the first two batches
+            break
